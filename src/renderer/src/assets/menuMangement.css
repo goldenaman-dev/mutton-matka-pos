@@ -1,0 +1,176 @@
+.menu-management {
+  height: 100vh;
+  width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: #0f0f0f;
+  color: #f5f5f5;
+}
+
+.menu-management h1 {
+  margin-bottom: 20px;
+  color: #d4af37;
+}
+
+.menu-management h2 {
+  color: #d4af37;
+}
+
+.section-card {
+  background: #1a1a1a;
+  border: 1px solid #2f2f2f;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.form-input {
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  font-size: 14px;
+
+  background: #242424;
+  color: white;
+}
+
+.form-input::placeholder {
+  color: #999;
+}
+
+.primary-btn {
+  background: #d4af37;
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.primary-btn:hover {
+  background: #e6c04a;
+}
+
+.table-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.table-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+
+  border: 1px solid #333;
+  border-radius: 8px;
+
+  background: #111;
+}
+
+/* Custom scrollbar */
+.table-container::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 10px;
+}
+
+.menu-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+}
+
+.menu-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.menu-table th {
+  background: #1f1f1f;
+  color: #d4af37;
+
+  padding: 14px;
+  text-align: left;
+
+  border-bottom: 2px solid #333;
+}
+
+.menu-table td {
+  padding: 12px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.menu-table tr:hover {
+  background: #1c1c1c;
+}
+
+.table-input {
+  width: 100%;
+  padding: 8px;
+
+  background: #242424;
+  color: white;
+
+  border: 1px solid #444;
+  border-radius: 6px;
+}
+
+.table-input:focus,
+.form-input:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.save-btn {
+  background: #198754;
+  color: white;
+
+  border: none;
+  border-radius: 6px;
+
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.save-btn:hover {
+  background: #20a565;
+}
+
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #999;
+}
+
+@media (max-width: 900px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
