@@ -161,7 +161,7 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
     <body>
 
       <div class="center title">
-        BILL
+        ----Mutton Matka---
       </div>
 
       <div class="line"></div>
