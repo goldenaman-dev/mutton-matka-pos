@@ -8,6 +8,7 @@ import { registerAuthHandlers } from './server/apis/auth'
 import { registerMenuHandlers } from './server/apis/menu'
 
 import { autoUpdater } from "electron-updater"
+import log from "electron-log"
 
 let mainWindow: BrowserWindow | null = null
 
@@ -35,27 +36,54 @@ function createWindow(): void {
   })
 
   const isDev = !app.isPackaged
+
   console.log(__dirname)
   console.log("is dev", isDev)
   console.log(process.env['ELECTRON_RENDERER_URL'])
 
-if (isDev && process.env['ELECTRON_RENDERER_URL']) {
-  mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-  // mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-} else {
-  mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-}
+  if (isDev && process.env['ELECTRON_RENDERER_URL']) {
+    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+  } else {
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+  }
 }
 
 // -------------------- AUTO UPDATER --------------------
 function setupAutoUpdater() {
-  autoUpdater.checkForUpdatesAndNotify()
+  // ---------------- CONFIG ----------------
+  autoUpdater.autoDownload = true
+  autoUpdater.autoInstallOnAppQuit = true
 
-  autoUpdater.on("update-available", () => {
-    console.log("Update available")
+  // ---------------- LOGGING (VERY IMPORTANT) ----------------
+  autoUpdater.logger = log
+  autoUpdater.logger.transports.file.level = "info"
+
+  console.log("🚀 AutoUpdater initialized")
+
+  // ---------------- EVENTS ----------------
+  autoUpdater.on("checking-for-update", () => {
+    console.log("🔍 Checking for updates...")
+  })
+
+  autoUpdater.on("update-available", (info) => {
+    console.log("🟢 Update available:", info.version)
+  })
+
+  autoUpdater.on("update-not-available", () => {
+    console.log("⚪ No update available")
+  })
+
+  autoUpdater.on("error", (err) => {
+    console.log("🔴 Updater error:", err)
+  })
+
+  autoUpdater.on("download-progress", (progress) => {
+    console.log(`⬇ Download: ${progress.percent.toFixed(2)}%`)
   })
 
   autoUpdater.on("update-downloaded", () => {
+    console.log("✅ Update downloaded")
+
     dialog.showMessageBox({
       type: "info",
       title: "Update Ready",
@@ -67,6 +95,16 @@ function setupAutoUpdater() {
       }
     })
   })
+
+  // ---------------- SAFE CHECK ----------------
+  setTimeout(() => {
+    try {
+      console.log("🚀 Running update check...")
+      autoUpdater.checkForUpdates()
+    } catch (err) {
+      console.log("❌ Update check failed:", err)
+    }
+  }, 3000)
 }
 
 // -------------------- APP READY --------------------
@@ -85,7 +123,7 @@ app.whenReady().then(() => {
   registerAuthHandlers()
   registerMenuHandlers()
 
-  // CREATE WINDOW (ONLY ONCE)
+  // CREATE WINDOW
   createWindow()
 
   // AUTO UPDATER
