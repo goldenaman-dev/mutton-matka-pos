@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import BackButton from './backButton'
 import '../assets/newOrder.css'
+import { useNavigate } from 'react-router-dom'
 
 interface OrderItem {
   itemId: number
@@ -11,6 +12,8 @@ interface OrderItem {
 }
 
 function NewOrder() {
+
+   const navigate = useNavigate()
   const [items, setItems] = useState<any[]>([])
   const [search, setSearch] = useState('')
   const [orderItems, setOrderItems] = useState<OrderItem[]>([])
@@ -126,17 +129,24 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
       <style>
         body {
           font-family: monospace;
-          width: 58mm;
-          padding: 5px;
+          
+          padding: 10px;
           font-size: 14px;
         }
 
         .center {
           text-align: center;
         }
+        .right {
+          text-align: right;
+        }
 
         .title {
           font-size: 20px;
+          font-weight: bold;
+        }
+         .small {
+          font-size: 15px;
           font-weight: bold;
         }
 
@@ -151,10 +161,7 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
           margin: 0;
         }
 
-        @page {
-          margin: 0;
-          size: 58mm auto;
-        }
+       
       </style>
     </head>
 
@@ -162,6 +169,15 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
 
       <div class="center title">
         ----Mutton Matka---
+
+      </div>
+      <div class="center small">
+        Taste of Tradition
+        
+      </div>
+       <div class="center">
+        kathal more, ranchi-834001
+       
       </div>
 
       <div class="line"></div>
@@ -178,7 +194,7 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
 
       <div class="line"></div>
 
-      <div class="center">
+      <div class="right">
         <b>Total: ₹${total}</b>
       </div>
 
@@ -283,6 +299,7 @@ Qty : ${item.qty}
   `
 
   await window.api.printBill(html)
+  navigate('/dashboard')
 }
 
   return (
