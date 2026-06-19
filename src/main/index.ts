@@ -8,7 +8,6 @@ import { registerAuthHandlers } from './server/apis/auth'
 import { registerMenuHandlers } from './server/apis/menu'
 
 import { autoUpdater } from "electron-updater"
-import log from "electron-log"
 
 let mainWindow: BrowserWindow | null = null
 
