@@ -34,11 +34,17 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-  } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-  }
+  const isDev = !app.isPackaged
+  console.log(__dirname)
+  console.log("is dev", isDev)
+  console.log(process.env['ELECTRON_RENDERER_URL'])
+
+if (isDev && process.env['ELECTRON_RENDERER_URL']) {
+  mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+  // mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+} else {
+  mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+}
 }
 
 // -------------------- AUTO UPDATER --------------------

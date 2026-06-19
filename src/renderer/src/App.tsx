@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom'
 import Home from './components/Home'
 import Login from './components/Login'
 import Dashboard from './components/dashboard'
@@ -12,7 +12,7 @@ import OrderHistory from './components/orderHistory'
 
 function App(): React.JSX.Element {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Home />} />
          <Route path="/login" element={<Login />} />
@@ -26,7 +26,7 @@ function App(): React.JSX.Element {
         <Route path="/settings" element={<Settings />} />
        
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
