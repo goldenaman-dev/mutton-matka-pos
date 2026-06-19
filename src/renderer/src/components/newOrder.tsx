@@ -125,63 +125,82 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
 
     const html = `
     <html>
-    <head>
-      <style>
-        body {
-          font-family: monospace;
-          
-          padding: 10px;
-          font-size: 14px;
-        }
+  <head>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: monospace;
+        font-size: 12px;
+      }
 
-        .center {
-          text-align: center;
-        }
-        .right {
-          text-align: right;
-        }
+      .receipt {
+        width: 100%;
+        max-width: 300px; /* safe for all thermal printers */
+        padding: 8px;
+        box-sizing: border-box;
+      }
 
-        .title {
-          font-size: 20px;
-          font-weight: bold;
-        }
-         .small {
-          font-size: 15px;
-          font-weight: bold;
-        }
+      .center {
+        text-align: center;
+      }
 
-        .line {
-          border-top: 1px dashed black;
-          margin: 6px 0;
-        }
+      .right {
+        text-align: right;
+      }
 
-        pre {
-          white-space: pre-wrap;
-          font-size: 14px;
-          margin: 0;
-        }
+      .title {
+        font-size: 16px;
+        font-weight: bold;
+      }
 
-       
-      </style>
-    </head>
+      .small {
+        font-size: 13px;
+        font-weight: bold;
+      }
 
-    <body>
+      .line {
+        border-top: 1px dashed black;
+        margin: 6px 0;
+      }
 
+      pre {
+        white-space: pre-wrap;
+        font-size: 12px;
+        margin: 0;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="receipt">
+
+      <!-- HEADER -->
       <div class="center title">
         ----Mutton Matka---
-
       </div>
+
       <div class="center small">
         Taste of Tradition
-        
       </div>
-       <div class="center">
+
+      <div class="center">
         kathal more, ranchi-834001
-       
       </div>
 
       <div class="line"></div>
 
+      <!-- ORDER INFO -->
       <div>
         Order No: ${orderNo}
         <br/>
@@ -190,20 +209,26 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
 
       <div class="line"></div>
 
+      <!-- ITEMS -->
       <pre>${billItems}</pre>
 
       <div class="line"></div>
 
+      <!-- TOTAL -->
       <div class="right">
         <b>Total: ₹${total}</b>
       </div>
 
-      <div class="center" style="margin-top:8px;">
+      <div class="line"></div>
+
+      <!-- FOOTER -->
+      <div class="footer">
         Thank You, Visit Again!
       </div>
 
-    </body>
-    </html>
+    </div>
+  </body>
+</html>
     `
 
     await window.api.printBill(html)
