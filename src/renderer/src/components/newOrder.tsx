@@ -137,7 +137,6 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
       .receipt {
         width: 100%;
         max-width: 300px; /* safe for all thermal printers */
-        padding: 8px;
         box-sizing: border-box;
       }
 
@@ -177,7 +176,6 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
 
       .footer {
         text-align: center;
-        margin-top: 8px;
       }
     </style>
   </head>
