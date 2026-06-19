@@ -115,9 +115,9 @@ function NewOrder() {
     const billItems = orderItems
       .map(
         (item) => `
-${item.name}  ${item.variant && item.variant !== 'Regular' ? `(${item.variant})` : ''}
+${item.name}-${item.variant && item.variant !== 'Regular' ? `(${item.variant})` : ''}
               ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
------------------------------------
+----------------------------------------
 `
       )
       .join('')
@@ -129,6 +129,7 @@ ${item.name}  ${item.variant && item.variant !== 'Regular' ? `(${item.variant})`
       html, body {
         margin: 0;
         padding: 0;
+        max-width:300px;
         font-family: monospace;
         font-size: 12px;
       }
@@ -148,6 +149,7 @@ body {
       }
 
       .right {
+      margin-right:30px;
         text-align: right;
       }
 
@@ -250,8 +252,7 @@ async function printKOT() {
   const kotItems = orderItems
     .map(
       (item) => `
-${item.name} ${item.variant !== 'Regular' ? `(${item.variant})` : ''} 
-              Qty : ${item.qty}
+${item.name} ${item.variant !== 'Regular' ? `(${item.variant})` : ''} --- Qty : ${item.qty}
 -----------------------------------
 `
     )
@@ -284,7 +285,7 @@ body {
 
       .right {
         text-align: right;
-        padding-right: 10px; /* important */
+        padding: 10px; /* important */
         box-sizing: border-box;
       }
 
