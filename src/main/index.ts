@@ -1,6 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { electronApp, optimizer } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
 import { initializeDatabase } from './server/database'
@@ -8,6 +8,7 @@ import { registerAuthHandlers } from './server/apis/auth'
 import { registerMenuHandlers } from './server/apis/menu'
 
 import { autoUpdater } from "electron-updater"
+import log from "electron-log"
 
 let mainWindow: BrowserWindow | null = null
 
@@ -36,9 +37,8 @@ function createWindow(): void {
 
   const isDev = !app.isPackaged
 
-  console.log(__dirname)
-  console.log("is dev", isDev)
-  console.log(process.env['ELECTRON_RENDERER_URL'])
+  console.log("is dev:", isDev)
+  console.log("renderer:", process.env['ELECTRON_RENDERER_URL'])
 
   if (isDev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
@@ -49,31 +49,59 @@ function createWindow(): void {
 
 // -------------------- AUTO UPDATER --------------------
 function setupAutoUpdater() {
-  // ---------------- CONFIG ----------------
   autoUpdater.autoDownload = true
   autoUpdater.autoInstallOnAppQuit = true
 
-  // ---------------- LOGGING (VERY IMPORTANT) ----------------
+  // logging
   autoUpdater.logger = log
   autoUpdater.logger.transports.file.level = "info"
 
   console.log("🚀 AutoUpdater initialized")
 
-  // ---------------- EVENTS ----------------
+  function showPopup(title: string, message: string, type: any = "info") {
+    if (!mainWindow) return
+
+    dialog.showMessageBox(mainWindow, {
+      type,
+      title,
+      message,
+      buttons: ["OK"]
+    })
+  }
+
   autoUpdater.on("checking-for-update", () => {
     console.log("🔍 Checking for updates...")
+    showPopup("Checking Updates", "Searching for latest version...")
   })
 
   autoUpdater.on("update-available", (info) => {
     console.log("🟢 Update available:", info.version)
+
+    dialog.showMessageBox(mainWindow!, {
+      type: "info",
+      title: "Update Available",
+      message: `New version ${info.version} is available. Downloading now...`,
+      buttons: ["OK"]
+    })
   })
 
   autoUpdater.on("update-not-available", () => {
     console.log("⚪ No update available")
+
+    showPopup(
+      "Up to Date",
+      "You are already using the latest version."
+    )
   })
 
   autoUpdater.on("error", (err) => {
-    console.log("🔴 Updater error:", err)
+    console.log("🔴 Update error:", err)
+
+    showPopup(
+      "Update Error",
+      err?.message || String(err),
+      "error"
+    )
   })
 
   autoUpdater.on("download-progress", (progress) => {
@@ -83,25 +111,33 @@ function setupAutoUpdater() {
   autoUpdater.on("update-downloaded", () => {
     console.log("✅ Update downloaded")
 
-    dialog.showMessageBox({
-      type: "info",
-      title: "Update Ready",
-      message: "New version downloaded. Restart to apply update?",
-      buttons: ["Restart", "Later"]
-    }).then(result => {
-      if (result.response === 0) {
-        autoUpdater.quitAndInstall()
-      }
-    })
+    dialog
+      .showMessageBox(mainWindow!, {
+        type: "info",
+        title: "Update Ready",
+        message: "Update downloaded. Restart to install?",
+        buttons: ["Restart", "Later"]
+      })
+      .then((result) => {
+        if (result.response === 0) {
+          autoUpdater.quitAndInstall()
+        }
+      })
   })
 
-  // ---------------- SAFE CHECK ----------------
   setTimeout(() => {
     try {
       console.log("🚀 Running update check...")
+      showPopup("Checking Updates", "Looking for updates...")
       autoUpdater.checkForUpdates()
     } catch (err) {
       console.log("❌ Update check failed:", err)
+
+      showPopup(
+        "Update Failed",
+        String(err),
+        "error"
+      )
     }
   }, 3000)
 }
@@ -114,18 +150,13 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC
   ipcMain.on('ping', () => console.log('pong'))
 
-  // INIT APP LOGIC
   initializeDatabase()
   registerAuthHandlers()
   registerMenuHandlers()
 
-  // CREATE WINDOW
   createWindow()
-
-  // AUTO UPDATER
   setupAutoUpdater()
 
   app.on('activate', () => {
