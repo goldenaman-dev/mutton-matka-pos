@@ -115,10 +115,9 @@ function NewOrder() {
     const billItems = orderItems
       .map(
         (item) => `
-${item.name}
-${item.variant && item.variant !== 'Regular' ? `(${item.variant})` : ''}
-${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
---------------------------------
+${item.name}  ${item.variant && item.variant !== 'Regular' ? `(${item.variant})` : ''}
+              ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
+-----------------------------------
 `
       )
       .join('')
@@ -164,7 +163,7 @@ body {
 
       .line {
         border-top: 1px dashed black;
-        margin: 6px 0;
+        margin: 1px 0;
       }
 
       pre {
@@ -251,10 +250,9 @@ async function printKOT() {
   const kotItems = orderItems
     .map(
       (item) => `
-${item.name}
-${item.variant !== 'Regular' ? `(${item.variant})` : ''}
-Qty : ${item.qty}
---------------------------------
+${item.name} ${item.variant !== 'Regular' ? `(${item.variant})` : ''} 
+              Qty : ${item.qty}
+-----------------------------------
 `
     )
     .join('')
@@ -263,36 +261,61 @@ Qty : ${item.qty}
   <html>
   <head>
     <style>
-      body {
+      html, body {
+        margin: 0;
+        padding: 0;
         font-family: monospace;
-        width: 58mm;
-        padding: 5px;
-        font-size: 14px;
+        font-size: 12px;
       }
+
+      @page {
+  size: 80mm auto;
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
 
       .center {
         text-align: center;
       }
 
+      .right {
+        text-align: right;
+        padding-right: 10px; /* important */
+        box-sizing: border-box;
+      }
+
       .title {
-        font-size: 22px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .small {
+        font-size: 13px;
         font-weight: bold;
       }
 
       .line {
         border-top: 1px dashed black;
-        margin: 6px 0;
+        margin: 1px 0;
       }
 
       pre {
         white-space: pre-wrap;
-        font-size: 15px;
+        font-size: 12px;
         margin: 0;
       }
 
-      @page {
-        margin: 0;
-        size: 58mm auto;
+      .row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .footer {
+        text-align: center;
       }
     </style>
   </head>
