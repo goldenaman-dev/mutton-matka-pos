@@ -134,11 +134,15 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
         font-size: 12px;
       }
 
-      .receipt {
-        width: 100%;
-        max-width: 300px; /* safe for all thermal printers */
-        box-sizing: border-box;
-      }
+      @page {
+  size: 80mm auto;
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
 
       .center {
         text-align: center;
@@ -181,7 +185,7 @@ ${item.qty} x ₹${item.price} = ₹${item.qty * item.price}
   </head>
 
   <body>
-    <div class="receipt">
+    <div class="">
 
       <!-- HEADER -->
       <div class="center title">

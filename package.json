@@ -1,6 +1,6 @@
 {
   "name": "muttonMatkaPos",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
   "author": "example.com",
@@ -38,6 +38,7 @@
     "@vitejs/plugin-react": "^5.1.1",
     "electron": "^39.2.6",
     "electron-builder": "^26.15.3",
+    "electron-log": "^5.4.4",
     "electron-rebuild": "^3.2.9",
     "electron-updater": "^6.8.9",
     "electron-vite": "^5.0.0",
